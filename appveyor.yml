@@ -1,0 +1,33 @@
+clone_depth: 1
+version: '{branch}-{build}'
+image: Visual Studio 2017
+configuration: Release
+cache:
+  - C:\ProgramData\chocolatey\bin -> appveyor.yml
+  - C:\ProgramData\chocolatey\lib -> appveyor.yml
+  - inspectcode -> appveyor.yml
+  - packages -> **\packages.config
+install:
+  - cmd: git submodule update --init --recursive --depth=5
+  - cmd: choco install resharper-clt -y
+  - cmd: choco install nvika -y
+before_build:
+  - cmd: nuget restore -verbosity quiet
+environment:
+  TargetFramework: net471
+build:
+  project: Touhou Sharp.sln
+  parallel: true
+  verbosity: minimal
+after_build:
+  - cmd: inspectcode --o="inspectcodereport.xml" --projects:touhou.sharp.Game* --caches-home="inspectcode" "Touhou Sharp.sln" > NUL
+  - cmd: NVika parsereport "inspectcodereport.xml" --treatwarningsaserrors
+on_success:
+  - ps: Invoke-RestMethod https://raw.githubusercontent.com/k3rn31p4nic/appveyor-discord-webhook/master/send.ps1 -o send.ps1
+  - ps: ./send.ps1 success $env:WEBHOOK_URL
+on_failure:
+  - ps: Invoke-RestMethod https://raw.githubusercontent.com/k3rn31p4nic/appveyor-discord-webhook/master/send.ps1 -o send.ps1
+  - ps: ./send.ps1 failure $env:WEBHOOK_URL
+artifacts:
+  - path: touhou.sharp.Desktop\bin\$(configuration)\ 
+    name: Binaries

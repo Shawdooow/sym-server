@@ -1,0 +1,29 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <Import Project="..\Symcol.Server.props" />
+  <PropertyGroup Label="Project">
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <AssemblyTitle>Symcol.Server</AssemblyTitle>
+    <Description>SymcolServer</Description>
+    <OutputType>Library</OutputType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Remove="Gameplay\**" />
+    <Compile Remove="Networking\**" />
+    <EmbeddedResource Remove="Gameplay\**" />
+    <EmbeddedResource Remove="Networking\**" />
+    <None Remove="Gameplay\**" />
+    <None Remove="Networking\**" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\osu-symcol\osu.Game.Rulesets.Vitaru\osu.Game.Rulesets.Vitaru.csproj" />
+    <ProjectReference Include="..\..\osu-symcol\osu.Game\osu.Game.csproj" />
+    <ProjectReference Include="..\..\osu-symcol\Symcol.Rulesets.Core\Symcol.Rulesets.Core.csproj" />
+    <ProjectReference Include="..\osu-framework\osu.Framework\osu.Framework.csproj" />
+    <ProjectReference Include="..\Symcol.Core\Symcol.Core.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{82a7f48d-3b50-4b1e-b82e-3ada8210c358}" />
+  </ItemGroup>
+</Project>

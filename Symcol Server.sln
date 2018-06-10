@@ -1,0 +1,126 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27130.2036
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Symcol.Core", "Symcol.Core\Symcol.Core.csproj", "{C9A73D4E-2D47-4C49-AC97-7A54BCA81445}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Symcol.Server", "Symcol.Server\Symcol.Server.csproj", "{FBDB7628-34B6-4EEF-A7CF-95E307EF0A64}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Symcol.Server.Desktop", "Symcol.Server.Desktop\Symcol.Server.Desktop.csproj", "{E869B5D2-AE5F-4020-A7FC-81AD3643609E}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "osu.Framework", "osu-framework\osu.Framework\osu.Framework.csproj", "{181362E3-FCA0-4DF3-9919-B26FAD4F1FF0}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "osu-symcol", "osu-symcol", "{86808419-9CCB-46B7-8655-70148C8A4EF5}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "osu.Game", "..\osu-symcol\osu.Game\osu.Game.csproj", "{AECB36F6-F9A7-4F1E-9B1C-06B80DA0E09B}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "osu.Game.Rulesets.Vitaru", "..\osu-symcol\osu.Game.Rulesets.Vitaru\osu.Game.Rulesets.Vitaru.csproj", "{0E0DC294-A3D5-4476-BA28-2DB37DDE6445}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Symcol.Rulesets.Core", "..\osu-symcol\Symcol.Rulesets.Core\Symcol.Rulesets.Core.csproj", "{8553CFD7-21E6-4705-8BAE-8B54BE5DF3E8}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C9A73D4E-2D47-4C49-AC97-7A54BCA81445}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C9A73D4E-2D47-4C49-AC97-7A54BCA81445}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C9A73D4E-2D47-4C49-AC97-7A54BCA81445}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C9A73D4E-2D47-4C49-AC97-7A54BCA81445}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FBDB7628-34B6-4EEF-A7CF-95E307EF0A64}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FBDB7628-34B6-4EEF-A7CF-95E307EF0A64}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FBDB7628-34B6-4EEF-A7CF-95E307EF0A64}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FBDB7628-34B6-4EEF-A7CF-95E307EF0A64}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E869B5D2-AE5F-4020-A7FC-81AD3643609E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E869B5D2-AE5F-4020-A7FC-81AD3643609E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E869B5D2-AE5F-4020-A7FC-81AD3643609E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E869B5D2-AE5F-4020-A7FC-81AD3643609E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{181362E3-FCA0-4DF3-9919-B26FAD4F1FF0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{181362E3-FCA0-4DF3-9919-B26FAD4F1FF0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{181362E3-FCA0-4DF3-9919-B26FAD4F1FF0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{181362E3-FCA0-4DF3-9919-B26FAD4F1FF0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AECB36F6-F9A7-4F1E-9B1C-06B80DA0E09B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AECB36F6-F9A7-4F1E-9B1C-06B80DA0E09B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AECB36F6-F9A7-4F1E-9B1C-06B80DA0E09B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AECB36F6-F9A7-4F1E-9B1C-06B80DA0E09B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0E0DC294-A3D5-4476-BA28-2DB37DDE6445}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0E0DC294-A3D5-4476-BA28-2DB37DDE6445}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0E0DC294-A3D5-4476-BA28-2DB37DDE6445}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0E0DC294-A3D5-4476-BA28-2DB37DDE6445}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8553CFD7-21E6-4705-8BAE-8B54BE5DF3E8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8553CFD7-21E6-4705-8BAE-8B54BE5DF3E8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8553CFD7-21E6-4705-8BAE-8B54BE5DF3E8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8553CFD7-21E6-4705-8BAE-8B54BE5DF3E8}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{AECB36F6-F9A7-4F1E-9B1C-06B80DA0E09B} = {86808419-9CCB-46B7-8655-70148C8A4EF5}
+		{0E0DC294-A3D5-4476-BA28-2DB37DDE6445} = {86808419-9CCB-46B7-8655-70148C8A4EF5}
+		{8553CFD7-21E6-4705-8BAE-8B54BE5DF3E8} = {86808419-9CCB-46B7-8655-70148C8A4EF5}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {F351B246-0159-4490-8505-3292A47E0233}
+	EndGlobalSection
+	GlobalSection(MonoDevelopProperties) = preSolution
+		Policies = $0
+		$0.TextStylePolicy = $1
+		$1.EolMarker = Windows
+		$1.inheritsSet = VisualStudio
+		$1.inheritsScope = text/plain
+		$1.scope = text/x-csharp
+		$0.CSharpFormattingPolicy = $2
+		$2.IndentSwitchSection = True
+		$2.NewLinesForBracesInProperties = True
+		$2.NewLinesForBracesInAccessors = True
+		$2.NewLinesForBracesInAnonymousMethods = True
+		$2.NewLinesForBracesInControlBlocks = True
+		$2.NewLinesForBracesInAnonymousTypes = True
+		$2.NewLinesForBracesInObjectCollectionArrayInitializers = True
+		$2.NewLinesForBracesInLambdaExpressionBody = True
+		$2.NewLineForElse = True
+		$2.NewLineForCatch = True
+		$2.NewLineForFinally = True
+		$2.NewLineForMembersInObjectInit = True
+		$2.NewLineForMembersInAnonymousTypes = True
+		$2.NewLineForClausesInQuery = True
+		$2.SpacingAfterMethodDeclarationName = False
+		$2.SpaceAfterMethodCallName = False
+		$2.SpaceBeforeOpenSquareBracket = False
+		$2.inheritsSet = Mono
+		$2.inheritsScope = text/x-csharp
+		$2.scope = text/x-csharp
+	EndGlobalSection
+	GlobalSection(MonoDevelopProperties) = preSolution
+		Policies = $0
+		$0.TextStylePolicy = $1
+		$1.EolMarker = Windows
+		$1.inheritsSet = VisualStudio
+		$1.inheritsScope = text/plain
+		$1.scope = text/x-csharp
+		$0.CSharpFormattingPolicy = $2
+		$2.IndentSwitchSection = True
+		$2.NewLinesForBracesInProperties = True
+		$2.NewLinesForBracesInAccessors = True
+		$2.NewLinesForBracesInAnonymousMethods = True
+		$2.NewLinesForBracesInControlBlocks = True
+		$2.NewLinesForBracesInAnonymousTypes = True
+		$2.NewLinesForBracesInObjectCollectionArrayInitializers = True
+		$2.NewLinesForBracesInLambdaExpressionBody = True
+		$2.NewLineForElse = True
+		$2.NewLineForCatch = True
+		$2.NewLineForFinally = True
+		$2.NewLineForMembersInObjectInit = True
+		$2.NewLineForMembersInAnonymousTypes = True
+		$2.NewLineForClausesInQuery = True
+		$2.SpacingAfterMethodDeclarationName = False
+		$2.SpaceAfterMethodCallName = False
+		$2.SpaceBeforeOpenSquareBracket = False
+		$2.inheritsSet = Mono
+		$2.inheritsScope = text/x-csharp
+		$2.scope = text/x-csharp
+	EndGlobalSection
+EndGlobal

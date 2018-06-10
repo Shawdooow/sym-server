@@ -1,0 +1,21 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <Import Project="..\Symcol.Server.props" />
+  <PropertyGroup Label="Project">
+    <TargetFrameworks>net471;netcoreapp2.0</TargetFrameworks>
+    <AssemblyTitle>Symcol.Server.Desktop</AssemblyTitle>
+    <Description>SymcolServer's executable</Description>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <ApplicationIcon />
+    <OutputType>WinExe</OutputType>
+    <StartupObject />
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\osu-symcol\osu.Game.Rulesets.Vitaru\osu.Game.Rulesets.Vitaru.csproj" />
+    <ProjectReference Include="..\..\osu-symcol\osu.Game\osu.Game.csproj" />
+    <ProjectReference Include="..\..\osu-symcol\Symcol.Rulesets.Core\Symcol.Rulesets.Core.csproj" />
+    <ProjectReference Include="..\osu-framework\osu.Framework\osu.Framework.csproj" />
+    <ProjectReference Include="..\Symcol.Core\Symcol.Core.csproj" />
+    <ProjectReference Include="..\Symcol.Server\Symcol.Server.csproj" />
+  </ItemGroup>
+</Project>
