@@ -17,7 +17,7 @@ namespace Symcol.Server.Screens
             ServerNetworkingClientHandler server = new ServerNetworkingClientHandler
             {
                 ClientType = ClientType.Server,
-                Address = "10.0.0.25:25570"
+                Address = "10.0.0.25:25571"
             };
 
             Children = new Drawable[]

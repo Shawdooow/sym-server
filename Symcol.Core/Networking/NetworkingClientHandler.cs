@@ -226,6 +226,7 @@ namespace Symcol.Core.Networking
                         break;
                 }
             };
+            OnClientTypeChange?.Invoke(clientType);
         }
 
         #region Update Loop
