@@ -5,6 +5,7 @@ using osu.Framework.Screens;
 using OpenTK;
 using OpenTK.Graphics;
 using Symcol.Core.Graphics.Containers;
+using Symcol.Core.Networking;
 using Symcol.Server.Networking;
 
 namespace Symcol.Server.Screens
@@ -13,7 +14,11 @@ namespace Symcol.Server.Screens
     {
         public HomeScreen()
         {
-            ServerNetworkingClientHandler server = new ServerNetworkingClientHandler();
+            ServerNetworkingClientHandler server = new ServerNetworkingClientHandler
+            {
+                ClientType = ClientType.Server,
+                Address = "10.0.0.25:25570"
+            };
 
             Children = new Drawable[]
             {
@@ -102,7 +107,6 @@ namespace Symcol.Server.Screens
             {
                 GameID = "osu!symcol"
             });
-            server.Address = "10.0.0.25:25570";
         }
     }
 }
