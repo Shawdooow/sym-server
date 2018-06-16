@@ -1,20 +1,24 @@
-﻿using System;
-
-namespace Symcol.Core.Networking
+﻿namespace Symcol.Core.Networking
 {
     /// <summary>
     /// Just a client signature
     /// </summary>
-    [Serializable]
     public class ClientInfo
     {
+        public string Address;
+
         public string IP;
 
         public int Port;
 
-        public int Ping;
+        public string GameID;
 
-        public int ConncetionTryCount;
+        /// <summary>
+        /// Last successful ping to this client
+        /// </summary>
+        public double Ping;
+
+        public int ConnectionTryCount;
 
         public double LastConnectionTime;
     }

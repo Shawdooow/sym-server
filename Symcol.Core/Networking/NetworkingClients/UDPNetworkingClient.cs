@@ -3,7 +3,7 @@ using System.Net.Sockets;
 using Mono.Nat;
 using osu.Framework.Logging;
 
-namespace Symcol.Core.NetworkingV2.NetworkingClients
+namespace Symcol.Core.Networking.NetworkingClients
 {
     public class UDPNetworkingClient : NetworkingClient
     {

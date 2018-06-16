@@ -4,10 +4,11 @@ using System.Net;
 using System.Runtime.Serialization.Formatters.Binary;
 using Mono.Nat;
 using osu.Framework.Logging;
-using Symcol.Core.NetworkingV2.Packets;
+using Symcol.Core.Networking.Packets;
+
 // ReSharper disable InconsistentNaming
 
-namespace Symcol.Core.NetworkingV2.NetworkingClients
+namespace Symcol.Core.Networking.NetworkingClients
 {
     public abstract class NetworkingClient : IDisposable
     {

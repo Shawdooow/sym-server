@@ -5,6 +5,7 @@ using osu.Framework.Screens;
 using OpenTK;
 using OpenTK.Graphics;
 using Symcol.Core.Graphics.Containers;
+using Symcol.Server.Networking;
 
 namespace Symcol.Server.Screens
 {
@@ -12,6 +13,8 @@ namespace Symcol.Server.Screens
     {
         public HomeScreen()
         {
+            ServerNetworkingClientHandler server = new ServerNetworkingClientHandler();
+
             Children = new Drawable[]
             {
                 new Box
@@ -91,8 +94,15 @@ namespace Symcol.Server.Screens
                             Text = "Playfield"
                         }
                     }
-                }
+                },
+                server
             };
+
+            server.RunningGames.Add(new GameInfo
+            {
+                GameID = "osu!symcol"
+            });
+            server.Address = "10.0.0.25:25570";
         }
     }
 }

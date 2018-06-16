@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Symcol.Core.NetworkingV2.Packets
+namespace Symcol.Core.Networking.Packets
 {
     [Serializable]
     public class DisconnectPacket : Packet

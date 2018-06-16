@@ -10,11 +10,8 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Remove="Gameplay\**" />
-    <Compile Remove="Networking\**" />
     <EmbeddedResource Remove="Gameplay\**" />
-    <EmbeddedResource Remove="Networking\**" />
     <None Remove="Gameplay\**" />
-    <None Remove="Networking\**" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\osu-framework\osu.Framework\osu.Framework.csproj" />
