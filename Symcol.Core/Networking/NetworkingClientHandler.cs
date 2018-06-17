@@ -57,12 +57,12 @@ namespace Symcol.Core.Networking
         /// <summary>
         /// Gets hit when we get + send a Packet
         /// </summary>
-        public Action<Packet> OnPacketReceive;
+        public event Action<Packet> OnPacketReceive;
 
         /// <summary>
         /// Call this when we connect to a Host (Includes list of connected peers + Host)
         /// </summary>
-        public Action<List<ClientInfo>> OnConnectedToHost;
+        public event Action<List<ClientInfo>> OnConnectedToHost;
 
         /// <summary>
         /// TODO: Implement TCP connections
@@ -207,7 +207,7 @@ namespace Symcol.Core.Networking
                     ReceiveClient.Address = address;
             };
 
-            OnClientTypeChange += (type) =>
+            OnClientTypeChange += type =>
             {
                 switch (type)
                 {

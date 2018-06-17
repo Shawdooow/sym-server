@@ -1,25 +1,34 @@
-﻿using osu.Framework.Graphics;
+﻿using osu.Framework.Extensions.Color4Extensions;
+using osu.Framework.Graphics;
+using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Shapes;
 using osu.Framework.Graphics.Sprites;
+using osu.Framework.Graphics.UserInterface;
 using osu.Framework.Screens;
 using OpenTK;
 using OpenTK.Graphics;
 using Symcol.Core.Graphics.Containers;
-using Symcol.Core.Networking;
-using Symcol.Server.Networking;
+using Symcol.Core.Graphics.UserInterface;
+using Symcol.Server.Screens.Pieces;
 
 namespace Symcol.Server.Screens
 {
     public class HomeScreen : Screen
     {
+        private readonly FillFlowContainer<GameItem> games;
+        private readonly FillFlowContainer<PlayerItem> players;
+
+        private readonly SymcolClickableContainer add;
+
+        private readonly SymcolWindow addWindow;
+        private readonly TextBox gameNameBox;
+        private readonly TextBox gameIDBox;
+        private readonly TextBox addressBox;
+
+        private readonly SymcolWindow confirmWindow;
+
         public HomeScreen()
         {
-            ServerNetworkingClientHandler server = new ServerNetworkingClientHandler
-            {
-                ClientType = ClientType.Server,
-                Address = "10.0.0.25:25571"
-            };
-
             Children = new Drawable[]
             {
                 new Box
@@ -27,85 +36,236 @@ namespace Symcol.Server.Screens
                     RelativeSizeAxes = Axes.Both,
                     Colour = Color4.Blue
                 },
-                new SpriteText
+                new SymcolContainer
                 {
-                    Anchor = Anchor.Centre,
-                    Origin = Anchor.Centre,
-
-                    Colour = Color4.White,
-                    TextSize = 24,
-                    Text = "There is no game yet, check back later!"
-                },
-                new SymcolClickableContainer
-                {
-                    Anchor = Anchor.BottomRight,
-                    Origin = Anchor.BottomRight,
-                    Masking = true,
-
+                    Anchor = Anchor.CentreLeft,
+                    Origin = Anchor.CentreLeft,
                     RelativeSizeAxes = Axes.Both,
-                    Size = new Vector2(0.12f, 0.08f),
-                    Position = new Vector2(-10),
+                    Size = new Vector2(0.48f, 0.90f),
+                    Position = new Vector2(8, 0),
 
-                    CornerRadius = 16, 
-                    BorderThickness = 4,
-                    //Action = () => Push(new EditorScreen()),
+                    Masking = true,
+                    CornerRadius = 12,
 
                     Children = new Drawable[]
                     {
                         new Box
                         {
-                            Colour = Color4.Red,
-                            RelativeSizeAxes = Axes.Both
+                            RelativeSizeAxes = Axes.Both,
+                            Colour = Color4.Black,
+                            Alpha = 0.5f
                         },
-                        new SpriteText
+                        new ScrollContainer
                         {
                             Anchor = Anchor.Centre,
                             Origin = Anchor.Centre,
+                            RelativeSizeAxes = Axes.Both,
+                            Size = new Vector2(0.98f),
 
-                            Colour = Color4.White,
-                            TextSize = 24,
-                            Text = "Editor"
+                            Child = games = new FillFlowContainer<GameItem>
+                            {
+                                Anchor = Anchor.Centre,
+                                Origin = Anchor.Centre,
+                                RelativeSizeAxes = Axes.X,
+                                Spacing = new Vector2(0, 4)
+                            }
                         }
                     }
                 },
-                new SymcolClickableContainer
+
+                new SymcolContainer
                 {
-                    Anchor = Anchor.BottomLeft,
-                    Origin = Anchor.BottomLeft,
-                    Masking = true,
-
+                    Anchor = Anchor.CentreRight,
+                    Origin = Anchor.CentreRight,
                     RelativeSizeAxes = Axes.Both,
-                    Size = new Vector2(0.12f, 0.08f),
-                    Position = new Vector2(10, -10),
+                    Size = new Vector2(0.5f, 0.90f),
+                    Position = new Vector2(-8, 0),
 
-                    CornerRadius = 16,
-                    BorderThickness = 4,
-                    //Action = () => Push(new PlayfieldScreen()),
+                    Masking = true,
+                    CornerRadius = 12,
 
                     Children = new Drawable[]
                     {
                         new Box
                         {
-                            Colour = Color4.Red,
-                            RelativeSizeAxes = Axes.Both
+                            RelativeSizeAxes = Axes.Both,
+                            Colour = Color4.Black,
+                            Alpha = 0.5f
                         },
-                        new SpriteText
+                        new ScrollContainer
                         {
                             Anchor = Anchor.Centre,
                             Origin = Anchor.Centre,
+                            RelativeSizeAxes = Axes.Both,
+                            Size = new Vector2(0.98f),
 
-                            Colour = Color4.White,
-                            TextSize = 24,
-                            Text = "Playfield"
+                            Child = players = new FillFlowContainer<PlayerItem>
+                            {
+                                Anchor = Anchor.Centre,
+                                Origin = Anchor.Centre,
+                                RelativeSizeAxes = Axes.X,
+                            }
                         }
                     }
                 },
-                server
+                new Container
+                {
+                    Anchor = Anchor.BottomCentre,
+                    Origin = Anchor.BottomCentre,
+                    RelativeSizeAxes = Axes.Both,
+                    Height = 0.04f,
+
+                    Children = new Drawable[]
+                    {
+                        new Box
+                        {
+                            RelativeSizeAxes = Axes.Both,
+                            Colour = Color4.Black,
+                            Alpha = 0.25f
+                        },
+                        new FillFlowContainer<SymcolClickableContainer>
+                        {
+                            Anchor = Anchor.CentreLeft,
+                            Origin = Anchor.CentreLeft,
+                            RelativeSizeAxes = Axes.Both,
+                            Width = 0.33f,
+
+                            Children = new SymcolClickableContainer[]
+                            {
+                                add = new SymcolClickableContainer
+                                {
+                                    RelativeSizeAxes = Axes.Y,
+                                    Width = 40,
+                                    Action = () => addWindow.Toggle(),
+
+                                    Child = new Box
+                                    {
+                                        RelativeSizeAxes = Axes.Both,
+                                        Colour = Color4.Red.Opacity(0.2f)
+                                    }
+                                }
+                            }
+                        },
+                        new FillFlowContainer<SymcolClickableContainer>
+                        {
+                            Anchor = Anchor.Centre,
+                            Origin = Anchor.Centre,
+                            RelativeSizeAxes = Axes.Both,
+                            Width = 0.33f,
+                        },
+                        new FillFlowContainer<SymcolClickableContainer>
+                        {
+                            Anchor = Anchor.CentreRight,
+                            Origin = Anchor.CentreRight,
+                            RelativeSizeAxes = Axes.Both,
+                            Width = 0.33f,
+                        },
+                    }
+                },
+                addWindow = new SymcolWindow(new Vector2(200, 240))
             };
 
-            server.RunningGames.Add(new GameInfo
+            addWindow.WindowTitle.Text = "Add new Game";
+            addWindow.WindowContent.AddRange(new Drawable[]
             {
-                GameID = "osu!symcol"
+                new Box
+                {
+                    RelativeSizeAxes = Axes.Both,
+                    Colour = Color4.Black,
+                    Alpha = 0.25f
+                }, 
+
+                new SpriteText
+                {
+                    Anchor = Anchor.TopLeft,
+                    Origin = Anchor.TopLeft,
+
+                    Text = "Game Name",
+                    TextSize = 24
+                },
+                gameNameBox = new TextBox
+                {
+                    Anchor = Anchor.TopLeft,
+                    Origin = Anchor.TopLeft,
+
+                    RelativeSizeAxes = Axes.X,
+                    Height = 24,
+
+                    Text = "",
+                    Position = new Vector2(0, 20),
+                },
+
+                new SpriteText
+                {
+                    Anchor = Anchor.TopLeft,
+                    Origin = Anchor.TopLeft,
+
+                    Text = "Game ID",
+                    TextSize = 24,
+                    Position = new Vector2(0, 20 * 3),
+                },
+                gameIDBox = new TextBox
+                {
+                    Anchor = Anchor.TopLeft,
+                    Origin = Anchor.TopLeft,
+
+                    RelativeSizeAxes = Axes.X,
+                    Height = 24,
+
+                    Text = "",
+                    Position = new Vector2(0, 20 * 4),
+                },
+
+                new SpriteText
+                {
+                    Anchor = Anchor.TopLeft,
+                    Origin = Anchor.TopLeft,
+
+                    Text = "Game Address",
+                    TextSize = 24,
+                    Position = new Vector2(0, 20 * 6),
+                },
+                addressBox = new TextBox
+                {
+                    Anchor = Anchor.TopLeft,
+                    Origin = Anchor.TopLeft,
+
+                    RelativeSizeAxes = Axes.X,
+                    Height = 24,
+
+                    Text = "",
+                    Position = new Vector2(0, 20 * 7),
+                },
+
+                new SymcolClickableContainer
+                {
+                    Anchor = Anchor.BottomCentre,
+                    Origin = Anchor.BottomCentre,
+
+                    RelativeSizeAxes = Axes.X,
+                    Height = 20,
+                    Action = () =>
+                    {
+                        games.Add(new GameItem(gameNameBox.Text, gameIDBox.Text, addressBox.Text));
+                    },
+
+                    Children = new Drawable[]
+                    {
+                        new Box
+                        {
+                            RelativeSizeAxes = Axes.Both,
+                            Colour = Color4.Red.Opacity(0.2f)
+                        },
+                        new SpriteText
+                        {
+                            Anchor = Anchor.Centre,
+                            Origin = Anchor.Centre,
+
+                            Text = "Add Game",
+                            TextSize = 18,
+                        }
+                    }
+                } 
             });
         }
     }
