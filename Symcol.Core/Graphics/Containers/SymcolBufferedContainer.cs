@@ -2,7 +2,7 @@
 
 namespace Symcol.Core.Graphics.Containers
 {
-    public class SymcolContainer : Container
+    public class SymcolBufferedContainer : BufferedContainer
     {
         private bool disposed;
 

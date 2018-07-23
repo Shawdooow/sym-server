@@ -15,10 +15,6 @@ namespace Symcol.Core.NeuralNetworking
         /// </summary>
         public abstract T[] GetActiveActions { get; }
 
-        protected NeuralInputContainer(SimultaneousBindingMode bindingMode = SimultaneousBindingMode.Unique) : base()
-        {
-        }
-
         protected override void Update()
         {
             base.Update();
@@ -28,9 +24,9 @@ namespace Symcol.Core.NeuralNetworking
                 {
                     int i = TensorFlowBrain.GetOutput(t);
 
-                    if (i == 1)
+                    if (i % 2 == 1)
                         Pressed(t);
-                    else if (i == 2)
+                    else
                         Released(t);
                 }
             

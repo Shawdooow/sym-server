@@ -5,6 +5,8 @@ using osu.Framework.Timing;
 using Symcol.Core.Graphics.Containers;
 using Symcol.Core.Networking.NetworkingClients;
 using Symcol.Core.Networking.Packets;
+// ReSharper disable InconsistentNaming
+// ReSharper disable CollectionNeverUpdated.Global
 
 namespace Symcol.Core.Networking
 {
@@ -57,12 +59,12 @@ namespace Symcol.Core.Networking
         /// <summary>
         /// Gets hit when we get + send a Packet
         /// </summary>
-        public event Action<Packet> OnPacketReceive;
+        public Action<Packet> OnPacketReceive;
 
         /// <summary>
         /// Call this when we connect to a Host (Includes list of connected peers + Host)
         /// </summary>
-        public event Action<List<ClientInfo>> OnConnectedToHost;
+        public Action<List<ClientInfo>> OnConnectedToHost;
 
         /// <summary>
         /// TODO: Implement TCP connections
@@ -72,6 +74,7 @@ namespace Symcol.Core.Networking
             get => tcp;
             set
             {
+                // ReSharper disable once RedundantCheckBeforeAssignment
                 if (value != tcp)
                 {
                     tcp = value;
@@ -518,6 +521,7 @@ namespace Symcol.Core.Networking
 
         #endregion
 
+        // ReSharper disable once RedundantOverriddenMember
         protected override void Dispose(bool isDisposing)
         {
             //TODO: is this neccesary?
