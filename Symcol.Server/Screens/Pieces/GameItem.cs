@@ -6,6 +6,7 @@ using OpenTK;
 using OpenTK.Graphics;
 using Symcol.Core.Graphics.Containers;
 using Symcol.Core.Networking;
+using Symcol.Server.Mods;
 using Symcol.Server.Networking;
 
 namespace Symcol.Server.Screens.Pieces
@@ -26,11 +27,28 @@ namespace Symcol.Server.Screens.Pieces
             BorderColour = Color4.White;
             CornerRadius = 16;
 
-            Server = new ServerNetworkingClientHandler();
-
-            Server.ClientType = ClientType.Server;
-            Server.Address = address;
-            Server.ClientInfo.GameID = id;
+            Modset mod = ModStore.GetModset(name);
+            if (mod != null)
+            {
+                Server = mod.GetServerNetworkingClientHandler();
+                Server.ClientType = ClientType.Server;
+                Server.Address = address;
+            }
+            else
+            {
+                Server = new ServerNetworkingClientHandler
+                {
+                    ClientType = ClientType.Server,
+                    Address = address
+                };
+            }
+            Server.ClientInfo.Gamekey = id;
+            Server.RunningGame = new GameInfo
+            {
+                Name = name,
+                Gamekey = id,
+                //MaxPlayers = players
+            };
 
             Children = new Drawable[]
             {
