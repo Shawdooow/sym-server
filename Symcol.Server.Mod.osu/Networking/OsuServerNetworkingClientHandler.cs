@@ -10,6 +10,7 @@ namespace Symcol.Server.Mod.osu.Networking
     {
         protected override string Gamekey => "osu";
 
+        //TODO: if a match is empty for 1 min delete is automatically
         protected readonly List<MatchListPacket.MatchInfo> Matches = new List<MatchListPacket.MatchInfo>();
 
         protected override void HandlePackets(Packet packet)
@@ -25,13 +26,17 @@ namespace Symcol.Server.Mod.osu.Networking
                     base.HandlePackets(packet);
                     break;
                 case GetMatchListPacket getMatch:
-                    MatchListPacket matchList = new MatchListPacket();
-                    matchList.MatchInfoList = Matches;
+                    MatchListPacket matchList = new MatchListPacket
+                    {
+                        MatchInfoList = Matches
+                    };
                     SendToClient(matchList, getMatch);
                     break;
                 case CreateMatchPacket createMatch:
                     Matches.Add(createMatch.MatchInfo);
                     SendToClient(new MatchCreatedPacket{ MatchInfo = createMatch.MatchInfo }, createMatch);
+                    break;
+                case ChatPacket chat:
                     break;
                 //case DeleteMatchPacket deleteMatch:
             }
