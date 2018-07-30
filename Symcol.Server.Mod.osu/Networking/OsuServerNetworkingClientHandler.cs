@@ -1,7 +1,10 @@
 ﻿using System.Collections.Generic;
 using osu.Framework.Logging;
 using Symcol.Core.Networking.Packets;
+using Symcol.osu.Mods.Multi.Networking;
 using Symcol.osu.Mods.Multi.Networking.Packets;
+using Symcol.osu.Mods.Multi.Networking.Packets.Lobby;
+using Symcol.osu.Mods.Multi.Networking.Packets.Match;
 using Symcol.Server.Networking;
 
 namespace Symcol.Server.Mod.osu.Networking
@@ -36,10 +39,61 @@ namespace Symcol.Server.Mod.osu.Networking
                     Matches.Add(createMatch.MatchInfo);
                     SendToClient(new MatchCreatedPacket{ MatchInfo = createMatch.MatchInfo }, createMatch);
                     break;
+                case JoinMatchPacket joinPacket:
+                    if (joinPacket.MatchInfo == null)
+                        break;
+
+                    MatchListPacket.MatchInfo match = GetMatch(joinPacket.MatchInfo);
+
+                    if (match != null)
+                    {
+                        //Add them
+                        match.Players.Add((OsuClientInfo)GetClientInfo(joinPacket));
+
+                        //Tell them they have joined
+                        SendToClient(new JoinedMatchPacket {Players = match.Players}, joinPacket);
+
+                        //Tell everyone already there someone joined
+                        ShareWithMatchClients(match, new PlayerJoinedPacket
+                        {
+                            //This is so the person joining doesnt get sent this
+                            Address = joinPacket.Address,
+                            Player = joinPacket.OsuClientInfo
+                        });
+                    }
+                    else
+                        Logger.Log("Couldn't find a match matching one in packet!", LoggingTarget.Network, LogLevel.Error);
+
+                    break;
                 case ChatPacket chat:
+                    break;
+                case LeavePacket leave:
+                    if (GetMatch(leave.Match) != null)
+                        foreach (OsuClientInfo player in GetMatch(leave.Match).Players)
+                            if (Equals(player, leave.Player))
+                            {
+                                GetMatch(leave.Match).Players.Remove(player);
+                                break;
+                            }
+
+                    Logger.Log("Couldn't find a player to remove who told us they were leaving!", LoggingTarget.Network, LogLevel.Error);
                     break;
                 //case DeleteMatchPacket deleteMatch:
             }
+        }
+
+        protected void ShareWithMatchClients(MatchListPacket.MatchInfo match, Packet packet)
+        {
+            foreach (OsuClientInfo player in match.Players)
+                GetNetworkingClient(player).SendPacket(packet);
+        }
+
+        protected MatchListPacket.MatchInfo GetMatch(MatchListPacket.MatchInfo match)
+        {
+            foreach (MatchListPacket.MatchInfo m in Matches)
+                if (Equals(m, match))
+                    return m;
+            return null;
         }
     }
 }
