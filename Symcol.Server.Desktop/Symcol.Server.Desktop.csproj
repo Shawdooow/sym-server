@@ -11,8 +11,8 @@
     <StartupObject />
   </PropertyGroup>
   <ItemGroup>
-    <ProjectReference Include="..\osu-framework\osu.Framework\osu.Framework.csproj" />
-    <ProjectReference Include="..\Symcol.Core\Symcol.Core.csproj" />
+    <ProjectReference Include="..\osu-symcol\osu-framework\osu.Framework\osu.Framework.csproj" />
+    <ProjectReference Include="..\osu-symcol\Symcol\Symcol.Core\Symcol.Core.csproj" />
     <ProjectReference Include="..\Symcol.Server.Mod.osu\Symcol.Server.Mod.osu.csproj" />
     <ProjectReference Include="..\Symcol.Server\Symcol.Server.csproj" />
   </ItemGroup>
