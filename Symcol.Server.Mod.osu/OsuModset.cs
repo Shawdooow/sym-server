@@ -6,6 +6,6 @@ namespace Symcol.Server.Mod.osu
 {
     public sealed class OsuModset : Modset
     {
-        public override ServerNetworkingClientHandler GetServerNetworkingClientHandler() => new OsuNetworkingClientHandler();
+        public override ServerNetworkingClientHandler GetServerNetworkingClientHandler() => new OsuServerNetworkingClientHandler();
     }
 }

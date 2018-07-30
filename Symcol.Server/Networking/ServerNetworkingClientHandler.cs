@@ -1,4 +1,5 @@
-﻿using Symcol.Core.Networking;
+﻿using osu.Framework.Logging;
+using Symcol.Core.Networking;
 using Symcol.Core.Networking.Packets;
 
 namespace Symcol.Server.Networking
@@ -28,6 +29,7 @@ namespace Symcol.Server.Networking
             if (packet is ConnectPacket c && c.Gamekey == RunningGame.Gamekey)
                 return true;
 
+            Logger.Log($"This is not a packet we should handle!", LoggingTarget.Network, LogLevel.Debug);
             return false;
         }
     }
