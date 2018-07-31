@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using osu.Framework.Logging;
+using Symcol.Core.Networking;
 using Symcol.Core.Networking.Packets;
 using Symcol.osu.Mods.Multi.Networking;
 using Symcol.osu.Mods.Multi.Networking.Packets;
@@ -48,7 +49,7 @@ namespace Symcol.Server.Mod.osu.Networking
                     if (match != null)
                     {
                         //Add them
-                        match.Players.Add((OsuClientInfo)GetClientInfo(joinPacket));
+                        match.Players.Add(joinPacket.OsuClientInfo);
 
                         //Tell them they have joined
                         SendToClient(new JoinedMatchPacket {Players = match.Players}, joinPacket);
@@ -70,7 +71,7 @@ namespace Symcol.Server.Mod.osu.Networking
                 case LeavePacket leave:
                     if (GetMatch(leave.Match) != null)
                         foreach (OsuClientInfo player in GetMatch(leave.Match).Players)
-                            if (Equals(player, leave.Player))
+                            if (player.UserID == leave.Player.UserID)
                             {
                                 GetMatch(leave.Match).Players.Remove(player);
                                 break;
@@ -91,7 +92,10 @@ namespace Symcol.Server.Mod.osu.Networking
         protected MatchListPacket.MatchInfo GetMatch(MatchListPacket.MatchInfo match)
         {
             foreach (MatchListPacket.MatchInfo m in Matches)
-                if (Equals(m, match))
+                if (m.BeatmapTitle == match.BeatmapTitle &&
+                    m.BeatmapArtist == match.BeatmapArtist &&
+                    m.Name == match.Name &&
+                    m.Username == match.Username)
                     return m;
             return null;
         }
