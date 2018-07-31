@@ -80,6 +80,7 @@ namespace Symcol.Server.Mod.osu.Networking
                     ShareWithMatchClients(match, map);
                     break;
                 case ChatPacket chat:
+                    ShareWithMatchClients(GetMatch(chat.Player), chat);
                     break;
                 case LeavePacket leave:
                     if (GetMatch(leave.Player) != null)
