@@ -22,7 +22,7 @@ namespace Symcol.Server.Mod.osu.Networking
             if (!HandlePacket(packet))
                 return;
 
-            MatchListPacket.MatchInfo match;
+            MatchListPacket.MatchInfo match = null;
 
             switch (packet)
             {
@@ -44,7 +44,12 @@ namespace Symcol.Server.Mod.osu.Networking
                     if (joinPacket.OsuClientInfo == null)
                         break;
 
-                    match = GetMatch(joinPacket.OsuClientInfo);
+                    foreach (MatchListPacket.MatchInfo m in Matches)
+                        if (m.BeatmapTitle == joinPacket.Match.BeatmapTitle &&
+                            m.BeatmapArtist == joinPacket.Match.BeatmapArtist &&
+                            m.Name == joinPacket.Match.Name &&
+                            m.Username == joinPacket.Match.Username)
+                            match = m;
 
                     if (match != null)
                     {
