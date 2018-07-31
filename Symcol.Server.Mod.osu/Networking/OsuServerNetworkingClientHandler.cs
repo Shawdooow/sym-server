@@ -1,9 +1,7 @@
 ﻿using System.Collections.Generic;
 using osu.Framework.Logging;
-using Symcol.Core.Networking;
 using Symcol.Core.Networking.Packets;
 using Symcol.osu.Mods.Multi.Networking;
-using Symcol.osu.Mods.Multi.Networking.Packets;
 using Symcol.osu.Mods.Multi.Networking.Packets.Lobby;
 using Symcol.osu.Mods.Multi.Networking.Packets.Match;
 using Symcol.Server.Networking;
@@ -41,10 +39,10 @@ namespace Symcol.Server.Mod.osu.Networking
                     SendToClient(new MatchCreatedPacket{ MatchInfo = createMatch.MatchInfo }, createMatch);
                     break;
                 case JoinMatchPacket joinPacket:
-                    if (joinPacket.MatchInfo == null)
+                    if (joinPacket.OsuClientInfo == null)
                         break;
 
-                    MatchListPacket.MatchInfo match = GetMatch(joinPacket.MatchInfo);
+                    MatchListPacket.MatchInfo match = GetMatch(joinPacket.OsuClientInfo);
 
                     if (match != null)
                     {
@@ -69,17 +67,19 @@ namespace Symcol.Server.Mod.osu.Networking
                 case ChatPacket chat:
                     break;
                 case LeavePacket leave:
-                    if (GetMatch(leave.Match) != null)
-                        foreach (OsuClientInfo player in GetMatch(leave.Match).Players)
+                    if (GetMatch(leave.Player) != null)
+                        foreach (OsuClientInfo player in GetMatch(leave.Player).Players)
                             if (player.UserID == leave.Player.UserID)
                             {
-                                GetMatch(leave.Match).Players.Remove(player);
+                                GetMatch(leave.Player).Players.Remove(player);
                                 break;
                             }
 
                     Logger.Log("Couldn't find a player to remove who told us they were leaving!", LoggingTarget.Network, LogLevel.Error);
                     break;
-                //case DeleteMatchPacket deleteMatch:
+                case StartMatchPacket start:
+
+                    break;
             }
         }
 
@@ -89,14 +89,12 @@ namespace Symcol.Server.Mod.osu.Networking
                 GetNetworkingClient(player).SendPacket(packet);
         }
 
-        protected MatchListPacket.MatchInfo GetMatch(MatchListPacket.MatchInfo match)
+        protected MatchListPacket.MatchInfo GetMatch(OsuClientInfo player)
         {
             foreach (MatchListPacket.MatchInfo m in Matches)
-                if (m.BeatmapTitle == match.BeatmapTitle &&
-                    m.BeatmapArtist == match.BeatmapArtist &&
-                    m.Name == match.Name &&
-                    m.Username == match.Username)
-                    return m;
+                foreach (OsuClientInfo p in m.Players)
+                    if (p.UserID == player.UserID)
+                        return m;
             return null;
         }
     }
