@@ -88,6 +88,11 @@ namespace Symcol.Server.Mod.osu.Networking
                             if (player.UserID == leave.Player.UserID)
                             {
                                 GetMatch(leave.Player).Players.Remove(player);
+
+                                MatchListPacket list = new MatchListPacket();
+                                list = (MatchListPacket)SignPacket(list);
+                                list.MatchInfoList = Matches;
+                                GetNetworkingClient(GetClientInfo(leave)).SendPacket(list);
                                 break;
                             }
 
