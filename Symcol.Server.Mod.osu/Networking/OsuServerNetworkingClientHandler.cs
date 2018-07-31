@@ -22,6 +22,8 @@ namespace Symcol.Server.Mod.osu.Networking
             if (!HandlePacket(packet))
                 return;
 
+            MatchListPacket.MatchInfo match;
+
             switch (packet)
             {
                 default:
@@ -42,7 +44,7 @@ namespace Symcol.Server.Mod.osu.Networking
                     if (joinPacket.OsuClientInfo == null)
                         break;
 
-                    MatchListPacket.MatchInfo match = GetMatch(joinPacket.OsuClientInfo);
+                    match = GetMatch(joinPacket.OsuClientInfo);
 
                     if (match != null)
                     {
@@ -64,6 +66,14 @@ namespace Symcol.Server.Mod.osu.Networking
                         Logger.Log("Couldn't find a match matching one in packet!", LoggingTarget.Network, LogLevel.Error);
 
                     break;
+                case SetMapPacket map:
+                    match = GetMatch(map.Player);
+
+                    match.BeatmapTitle = map.BeatmapTitle;
+                    match.BeatmapArtist = map.BeatmapArtist;
+
+                    ShareWithMatchClients(match, map);
+                    break;
                 case ChatPacket chat:
                     break;
                 case LeavePacket leave:
@@ -78,7 +88,6 @@ namespace Symcol.Server.Mod.osu.Networking
                     Logger.Log("Couldn't find a player to remove who told us they were leaving!", LoggingTarget.Network, LogLevel.Error);
                     break;
                 case StartMatchPacket start:
-
                     break;
             }
         }
