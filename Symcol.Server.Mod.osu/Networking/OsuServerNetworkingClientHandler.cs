@@ -12,7 +12,7 @@ namespace Symcol.Server.Mod.osu.Networking
     {
         protected override string Gamekey => "osu";
 
-        //TODO: if a match is empty for 1 min delete is automatically
+        //TODO: if a match is empty for 1 min delete it automatically
         protected readonly List<MatchListPacket.MatchInfo> Matches = new List<MatchListPacket.MatchInfo>();
 
         protected override void HandlePackets(Packet packet)
@@ -57,7 +57,7 @@ namespace Symcol.Server.Mod.osu.Networking
                         match.Players.Add(joinPacket.OsuClientInfo);
 
                         //Tell them they have joined
-                        SendToClient(new JoinedMatchPacket {Players = match.Players}, joinPacket);
+                        SendToClient(new JoinedMatchPacket { Players = match.Players }, joinPacket);
 
                         //Tell everyone already there someone joined
                         ShareWithMatchClients(match, new PlayerJoinedPacket
@@ -71,11 +71,29 @@ namespace Symcol.Server.Mod.osu.Networking
                         Logger.Log("Couldn't find a match matching one in packet!", LoggingTarget.Network, LogLevel.Error);
 
                     break;
+                case GetMapPacket getMap:
+                    match = GetMatch(getMap.Player);
+                    SetMapPacket setMap = new SetMapPacket
+                    {
+                        OnlineBeatmapSetID = match.OnlineBeatmapSetID,
+                        OnlineBeatmapID = match.OnlineBeatmapID,
+                        BeatmapTitle = match.BeatmapTitle,
+                        BeatmapArtist = match.BeatmapArtist,
+                        BeatmapMapper = match.BeatmapMapper,
+                        BeatmapDifficulty = match.BeatmapDifficulty,
+                    };
+                    setMap = (SetMapPacket)SignPacket(setMap);
+                    GetNetworkingClient(GetClientInfo(getMap)).SendPacket(setMap);
+                    break;
                 case SetMapPacket map:
                     match = GetMatch(map.Player);
 
+                    match.OnlineBeatmapSetID = map.OnlineBeatmapSetID;
+                    match.OnlineBeatmapID = map.OnlineBeatmapID;
                     match.BeatmapTitle = map.BeatmapTitle;
                     match.BeatmapArtist = map.BeatmapArtist;
+                    match.BeatmapMapper = map.BeatmapMapper;
+                    match.BeatmapDifficulty = map.BeatmapDifficulty;
 
                     ShareWithMatchClients(match, map);
                     break;
@@ -116,6 +134,13 @@ namespace Symcol.Server.Mod.osu.Networking
                     if (p.UserID == player.UserID)
                         return m;
             return null;
+        }
+
+        protected class ServerMatch
+        {
+            public MatchListPacket.MatchInfo MatchInfo;
+
+            public double MatchLastUpdateTime;
         }
     }
 }
