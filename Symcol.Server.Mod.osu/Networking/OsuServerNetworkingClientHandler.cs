@@ -115,20 +115,27 @@ namespace Symcol.Server.Mod.osu.Networking
                     break;
                 case LeavePacket leave:
                     if (GetMatch(leave.Player) != null)
-                    {
-                        restart:
                         foreach (OsuClientInfo player in GetMatch(leave.Player).Players)
                             if (player.UserID == leave.Player.UserID)
                             {
                                 GetMatch(leave.Player).Players.Remove(player);
 
+                                foreach (ServerMatch m in ServerMatches)
+                                    foreach (Player p in m.LoadedPlayers)
+                                        if (p.OsuClientInfo.UserID == leave.Player.UserID)
+                                        {
+                                            m.Players.Remove(p);
+                                            m.LoadedPlayers.Remove(p);
+                                            break;
+                                        }
+
+                                //Update their matchlist next
                                 MatchListPacket list = new MatchListPacket();
-                                list = (MatchListPacket) SignPacket(list);
+                                list = (MatchListPacket)SignPacket(list);
                                 list.MatchInfoList = GetMatches();
                                 GetNetworkingClient(GetClientInfo(leave)).SendPacket(list);
-                                goto restart;
+                                break;
                             }
-                    }
 
                     Logger.Log("Couldn't find a player to remove who told us they were leaving!", LoggingTarget.Network, LogLevel.Error);
                     break;
@@ -203,6 +210,15 @@ namespace Symcol.Server.Mod.osu.Networking
         {
             foreach (OsuClientInfo player in match.Players)
                 GetNetworkingClient(player).SendPacket(packet);
+        }
+
+        protected Player GetPlayer(OsuClientInfo client)
+        {
+            foreach (ServerMatch m in ServerMatches)
+                foreach (Player p in m.Players)
+                    if (p.OsuClientInfo.UserID == client.UserID)
+                        return p;
+            return null;
         }
 
         protected MatchListPacket.MatchInfo GetMatch(OsuClientInfo player)
