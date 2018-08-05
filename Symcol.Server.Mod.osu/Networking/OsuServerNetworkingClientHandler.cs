@@ -4,6 +4,7 @@ using Symcol.Core.Networking.Packets;
 using Symcol.osu.Mods.Multi.Networking;
 using Symcol.osu.Mods.Multi.Networking.Packets.Lobby;
 using Symcol.osu.Mods.Multi.Networking.Packets.Match;
+using Symcol.osu.Mods.Multi.Networking.Packets.Player;
 using Symcol.Server.Networking;
 
 namespace Symcol.Server.Mod.osu.Networking
@@ -77,7 +78,7 @@ namespace Symcol.Server.Mod.osu.Networking
                     break;
                 case GetMapPacket getMap:
                     match = GetMatch(getMap.Player);
-                    SetMapPacket setMap = new SetMapPacket
+                    GetNetworkingClient(GetClientInfo(getMap)).SendPacket(SignPacket(new SetMapPacket
                     {
                         OnlineBeatmapSetID = match.OnlineBeatmapSetID,
                         OnlineBeatmapID = match.OnlineBeatmapID,
@@ -86,9 +87,7 @@ namespace Symcol.Server.Mod.osu.Networking
                         BeatmapMapper = match.BeatmapMapper,
                         BeatmapDifficulty = match.BeatmapDifficulty,
                         RulesetID = match.RulesetID,
-                    };
-                    setMap = (SetMapPacket)SignPacket(setMap);
-                    GetNetworkingClient(GetClientInfo(getMap)).SendPacket(setMap);
+                    }));
                     break;
                 case SetMapPacket map:
                     match = GetMatch(map.Player);
@@ -123,6 +122,27 @@ namespace Symcol.Server.Mod.osu.Networking
                     Logger.Log("Couldn't find a player to remove who told us they were leaving!", LoggingTarget.Network, LogLevel.Error);
                     break;
                 case StartMatchPacket start:
+                    match = GetMatch(start.Player);
+                    ShareWithMatchClients(match, new MatchLoadingPacket
+                    {
+                        Players = match.Players
+                    });
+                    break;
+                case PlayerLoadedPacket loaded:
+                    foreach (ServerMatch m in ServerMatches)
+                        foreach (Player p in m.Players)
+                            if (p.OsuClientInfo.UserID == loaded.Player.UserID)
+                            {
+                                m.Players.Remove(p);
+                                m.LoadedPlayers.Add(p);
+
+                                if (m.Players.Count == 0)
+                                    ShareWithMatchClients(m.MatchInfo, new MatchStartingPacket());
+
+                                break;
+                            }
+
+                    Logger.Log("A Player we can't find told us they have loaded!", LoggingTarget.Network, LogLevel.Error);
                     break;
             }
         }
@@ -144,6 +164,11 @@ namespace Symcol.Server.Mod.osu.Networking
                     ServerMatches.Remove(match);
                     Logger.Log("Empty match deleted!");
                     goto restart;
+                }
+
+                if (match.MatchInfo.Players.Count > 0)
+                {
+                    match.MatchLastUpdateTime = Time.Current;
                 }
             }
         }
@@ -188,6 +213,8 @@ namespace Symcol.Server.Mod.osu.Networking
             public MatchListPacket.MatchInfo MatchInfo;
 
             public List<Player> Players = new List<Player>();
+
+            public List<Player> LoadedPlayers = new List<Player>();
 
             public double MatchLastUpdateTime;
         }
