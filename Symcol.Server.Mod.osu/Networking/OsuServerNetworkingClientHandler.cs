@@ -81,6 +81,7 @@ namespace Symcol.Server.Mod.osu.Networking
                         BeatmapArtist = match.BeatmapArtist,
                         BeatmapMapper = match.BeatmapMapper,
                         BeatmapDifficulty = match.BeatmapDifficulty,
+                        RulesetID = match.RulesetID,
                     };
                     setMap = (SetMapPacket)SignPacket(setMap);
                     GetNetworkingClient(GetClientInfo(getMap)).SendPacket(setMap);
@@ -94,6 +95,7 @@ namespace Symcol.Server.Mod.osu.Networking
                     match.BeatmapArtist = map.BeatmapArtist;
                     match.BeatmapMapper = map.BeatmapMapper;
                     match.BeatmapDifficulty = map.BeatmapDifficulty;
+                    match.RulesetID = map.RulesetID;
 
                     ShareWithMatchClients(match, map);
                     break;
