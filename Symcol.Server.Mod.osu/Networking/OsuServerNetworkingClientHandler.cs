@@ -154,7 +154,7 @@ namespace Symcol.Server.Mod.osu.Networking
                     break;
                 case MatchExitPacket exit:
                     foreach (ServerMatch m in ServerMatches)
-                        foreach (Player p in m.Players)
+                        foreach (Player p in m.LoadedPlayers)
                             if (p.OsuClientInfo.UserID == exit.Player.UserID)
                                 foreach (Player r in m.Players)
                                 {
