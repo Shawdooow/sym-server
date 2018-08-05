@@ -115,17 +115,20 @@ namespace Symcol.Server.Mod.osu.Networking
                     break;
                 case LeavePacket leave:
                     if (GetMatch(leave.Player) != null)
+                    {
+                        restart:
                         foreach (OsuClientInfo player in GetMatch(leave.Player).Players)
                             if (player.UserID == leave.Player.UserID)
                             {
                                 GetMatch(leave.Player).Players.Remove(player);
 
                                 MatchListPacket list = new MatchListPacket();
-                                list = (MatchListPacket)SignPacket(list);
+                                list = (MatchListPacket) SignPacket(list);
                                 list.MatchInfoList = GetMatches();
                                 GetNetworkingClient(GetClientInfo(leave)).SendPacket(list);
-                                break;
+                                goto restart;
                             }
+                    }
 
                     Logger.Log("Couldn't find a player to remove who told us they were leaving!", LoggingTarget.Network, LogLevel.Error);
                     break;
