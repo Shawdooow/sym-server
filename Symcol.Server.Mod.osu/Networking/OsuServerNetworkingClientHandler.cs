@@ -13,7 +13,7 @@ namespace Symcol.Server.Mod.osu.Networking
         protected override string Gamekey => "osu";
 
         //TODO: if a match is empty for 1 min delete it automatically
-        protected readonly List<MatchListPacket.MatchInfo> Matches = new List<MatchListPacket.MatchInfo>();
+        protected readonly List<ServerMatch> ServerMatches = new List<ServerMatch>();
 
         protected override void HandlePackets(Packet packet)
         {
@@ -32,19 +32,19 @@ namespace Symcol.Server.Mod.osu.Networking
                 case GetMatchListPacket getMatch:
                     MatchListPacket matchList = new MatchListPacket
                     {
-                        MatchInfoList = Matches
+                        MatchInfoList = GetMatches()
                     };
                     SendToClient(matchList, getMatch);
                     break;
                 case CreateMatchPacket createMatch:
-                    Matches.Add(createMatch.MatchInfo);
+                    ServerMatches.Add(new ServerMatch { MatchInfo = createMatch.MatchInfo });
                     SendToClient(new MatchCreatedPacket{ MatchInfo = createMatch.MatchInfo }, createMatch);
                     break;
                 case JoinMatchPacket joinPacket:
                     if (joinPacket.OsuClientInfo == null)
                         break;
 
-                    foreach (MatchListPacket.MatchInfo m in Matches)
+                    foreach (MatchListPacket.MatchInfo m in GetMatches())
                         if (m.BeatmapTitle == joinPacket.Match.BeatmapTitle &&
                             m.BeatmapArtist == joinPacket.Match.BeatmapArtist &&
                             m.Name == joinPacket.Match.Name &&
@@ -111,7 +111,7 @@ namespace Symcol.Server.Mod.osu.Networking
 
                                 MatchListPacket list = new MatchListPacket();
                                 list = (MatchListPacket)SignPacket(list);
-                                list.MatchInfoList = Matches;
+                                list.MatchInfoList = GetMatches();
                                 GetNetworkingClient(GetClientInfo(leave)).SendPacket(list);
                                 break;
                             }
@@ -123,6 +123,26 @@ namespace Symcol.Server.Mod.osu.Networking
             }
         }
 
+        protected override void Update()
+        {
+            base.Update();
+
+            restart:
+            foreach (ServerMatch match in ServerMatches)
+            {
+                foreach (Player player in match.Players)
+                {
+                    
+                }
+
+                if (match.MatchInfo.Players.Count == 0 && match.MatchLastUpdateTime + 60000 <= Time.Current)
+                {
+                    ServerMatches.Remove(match);
+                    goto restart;
+                }
+            }
+        }
+
         protected void ShareWithMatchClients(MatchListPacket.MatchInfo match, Packet packet)
         {
             foreach (OsuClientInfo player in match.Players)
@@ -131,18 +151,47 @@ namespace Symcol.Server.Mod.osu.Networking
 
         protected MatchListPacket.MatchInfo GetMatch(OsuClientInfo player)
         {
-            foreach (MatchListPacket.MatchInfo m in Matches)
+            foreach (MatchListPacket.MatchInfo m in GetMatches())
                 foreach (OsuClientInfo p in m.Players)
                     if (p.UserID == player.UserID)
                         return m;
             return null;
         }
 
+        protected List<MatchListPacket.MatchInfo> GetMatches()
+        {
+            List<MatchListPacket.MatchInfo> matches = new List<MatchListPacket.MatchInfo>();
+
+            foreach (ServerMatch match in ServerMatches)
+                matches.Add(match.MatchInfo);
+
+            return matches;
+        }
+
+        protected List<OsuClientInfo> GetOsuClientInfos(ServerMatch serverMatch)
+        {
+            List<OsuClientInfo> clients = new List<OsuClientInfo>();
+
+            foreach (Player player in serverMatch.Players)
+                clients.Add(player.OsuClientInfo);
+
+            return clients;
+        }
+
         protected class ServerMatch
         {
             public MatchListPacket.MatchInfo MatchInfo;
 
+            public List<Player> Players = new List<Player>();
+
             public double MatchLastUpdateTime;
+        }
+
+        protected class Player
+        {
+            public OsuClientInfo OsuClientInfo;
+
+            public double PlayerLastUpdateTime;
         }
     }
 }
