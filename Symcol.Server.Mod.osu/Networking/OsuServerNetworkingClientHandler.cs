@@ -159,12 +159,16 @@ namespace Symcol.Server.Mod.osu.Networking
                     foreach (ServerMatch m in ServerMatches)
                         foreach (Player p in m.LoadedPlayers)
                             if (p.OsuClientInfo.UserID == exit.Player.UserID)
-                                foreach (Player r in m.Players)
+                            {
+                                restart:
+                                foreach (Player r in m.LoadedPlayers)
                                 {
                                     m.LoadedPlayers.Remove(r);
                                     m.Players.Add(r);
-                                    break;
+                                    goto restart;
                                 }
+                                break;
+                            }
                     break;
             }
         }
