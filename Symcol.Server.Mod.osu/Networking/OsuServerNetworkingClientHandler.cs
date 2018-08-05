@@ -37,7 +37,11 @@ namespace Symcol.Server.Mod.osu.Networking
                     SendToClient(matchList, getMatch);
                     break;
                 case CreateMatchPacket createMatch:
-                    ServerMatches.Add(new ServerMatch { MatchInfo = createMatch.MatchInfo });
+                    ServerMatches.Add(new ServerMatch
+                    {
+                        MatchInfo = createMatch.MatchInfo,
+                        MatchLastUpdateTime = Time.Current
+                    });
                     SendToClient(new MatchCreatedPacket{ MatchInfo = createMatch.MatchInfo }, createMatch);
                     break;
                 case JoinMatchPacket joinPacket:
@@ -138,6 +142,7 @@ namespace Symcol.Server.Mod.osu.Networking
                 if (match.MatchInfo.Players.Count == 0 && match.MatchLastUpdateTime + 60000 <= Time.Current)
                 {
                     ServerMatches.Remove(match);
+                    Logger.Log("Empty match deleted!");
                     goto restart;
                 }
             }
