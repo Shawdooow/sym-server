@@ -61,6 +61,14 @@ namespace Symcol.Server.Mod.osu.Networking
                         //Add them
                         match.Players.Add(joinPacket.OsuClientInfo);
 
+                        foreach (ServerMatch s in ServerMatches)
+                            if (s.MatchInfo == match)
+                                s.Players.Add(new Player
+                                {
+                                    OsuClientInfo = joinPacket.OsuClientInfo,
+                                    PlayerLastUpdateTime = Time.Current
+                                });
+
                         //Tell them they have joined
                         SendToClient(new JoinedMatchPacket { Players = match.Players }, joinPacket);
 
@@ -143,6 +151,17 @@ namespace Symcol.Server.Mod.osu.Networking
                             }
 
                     Logger.Log("A Player we can't find told us they have loaded!", LoggingTarget.Network, LogLevel.Error);
+                    break;
+                case MatchExitPacket exit:
+                    foreach (ServerMatch m in ServerMatches)
+                        foreach (Player p in m.Players)
+                            if (p.OsuClientInfo.UserID == exit.Player.UserID)
+                                foreach (Player r in m.Players)
+                                {
+                                    m.LoadedPlayers.Remove(r);
+                                    m.Players.Add(r);
+                                    break;
+                                }
                     break;
             }
         }
