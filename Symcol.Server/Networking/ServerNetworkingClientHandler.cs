@@ -4,7 +4,7 @@ using Symcol.Core.Networking.Packets;
 
 namespace Symcol.Server.Networking
 {
-    public class ServerNetworkingClientHandler : NetworkingClientHandler
+    public class ServerNetworkingClientHandler : NetworkingHandler
     {
         public GameInfo RunningGame;
 
