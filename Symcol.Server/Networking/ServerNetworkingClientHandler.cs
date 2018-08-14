@@ -1,6 +1,6 @@
 ﻿using osu.Framework.Logging;
-using Symcol.Core.Networking.NetworkingHandlers;
-using Symcol.Core.Networking.Packets;
+using Symcol.Networking.NetworkingHandlers;
+using Symcol.Networking.Packets;
 
 namespace Symcol.Server.Networking
 {

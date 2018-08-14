@@ -5,7 +5,6 @@ using osu.Framework.Input.States;
 using OpenTK;
 using OpenTK.Graphics;
 using Symcol.Core.Graphics.Containers;
-using Symcol.Core.Networking.NetworkingHandlers;
 using Symcol.Server.Mods;
 using Symcol.Server.Networking;
 

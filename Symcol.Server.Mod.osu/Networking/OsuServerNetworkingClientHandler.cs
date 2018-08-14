@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using osu.Framework.Logging;
-using Symcol.Core.Networking.Packets;
+using Symcol.Networking.Packets;
 using Symcol.osu.Mods.Multi.Networking;
 using Symcol.osu.Mods.Multi.Networking.Packets.Lobby;
 using Symcol.osu.Mods.Multi.Networking.Packets.Match;
