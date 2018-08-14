@@ -5,7 +5,7 @@ using osu.Framework.Input.States;
 using OpenTK;
 using OpenTK.Graphics;
 using Symcol.Core.Graphics.Containers;
-using Symcol.Core.Networking;
+using Symcol.Core.Networking.NetworkingHandlers;
 using Symcol.Server.Mods;
 using Symcol.Server.Networking;
 
@@ -31,14 +31,12 @@ namespace Symcol.Server.Screens.Pieces
             if (mod != null)
             {
                 Server = mod.GetServerNetworkingClientHandler();
-                Server.ClientType = ClientType.Server;
                 Server.Address = address;
             }
             else
             {
                 Server = new ServerNetworkingClientHandler
                 {
-                    ClientType = ClientType.Server,
                     Address = address
                 };
             }

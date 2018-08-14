@@ -1,10 +1,10 @@
 ﻿using osu.Framework.Logging;
-using Symcol.Core.Networking;
+using Symcol.Core.Networking.NetworkingHandlers;
 using Symcol.Core.Networking.Packets;
 
 namespace Symcol.Server.Networking
 {
-    public class ServerNetworkingClientHandler : NetworkingHandler
+    public class ServerNetworkingClientHandler : ServerNetworkingHandler
     {
         public GameInfo RunningGame;
 
