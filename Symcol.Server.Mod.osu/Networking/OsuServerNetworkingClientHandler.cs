@@ -18,7 +18,7 @@ namespace Symcol.Server.Mod.osu.Networking
 
         protected override void HandlePackets(Packet packet)
         {
-            Logger.Log($"Recieved a Packet from {packet.Address}", LoggingTarget.Network, LogLevel.Debug);
+            Logger.Log($"Recieved a Packet from {ReceivingClient.EndPoint}", LoggingTarget.Network, LogLevel.Debug);
 
             if (!HandlePacket(packet))
                 return;
