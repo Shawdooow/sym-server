@@ -86,7 +86,7 @@ namespace Symcol.Server.Mod.osu.Networking
                     break;
                 case GetMapPacket getMap:
                     match = GetMatch(getMap.Player);
-                    GetNetworkingClient(GetClientInfo(getMap)).SendPacket(SignPacket(new SetMapPacket
+                    NetworkingClient.SendPacket(SignPacket(new SetMapPacket
                     {
                         OnlineBeatmapSetID = match.OnlineBeatmapSetID,
                         OnlineBeatmapID = match.OnlineBeatmapID,
@@ -95,7 +95,7 @@ namespace Symcol.Server.Mod.osu.Networking
                         BeatmapMapper = match.BeatmapMapper,
                         BeatmapDifficulty = match.BeatmapDifficulty,
                         RulesetID = match.RulesetID,
-                    }));
+                    }), GetEndPoint(GetClientInfo(getMap)));
                     break;
                 case SetMapPacket map:
                     match = GetMatch(map.Player);
@@ -133,7 +133,7 @@ namespace Symcol.Server.Mod.osu.Networking
                                 MatchListPacket list = new MatchListPacket();
                                 list = (MatchListPacket)SignPacket(list);
                                 list.MatchInfoList = GetMatches();
-                                GetNetworkingClient(GetClientInfo(leave)).SendPacket(list);
+                                NetworkingClient.SendPacket(list, GetEndPoint(GetClientInfo(leave)));
                                 break;
                             }
 
@@ -209,7 +209,7 @@ namespace Symcol.Server.Mod.osu.Networking
         protected void ShareWithMatchClients(MatchListPacket.MatchInfo match, Packet packet)
         {
             foreach (OsuClientInfo player in match.Players)
-                GetNetworkingClient(player).SendPacket(packet);
+                NetworkingClient.SendPacket(packet, GetEndPoint(player));
         }
 
         protected Player GetPlayer(OsuClientInfo client)
