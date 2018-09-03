@@ -1,10 +1,11 @@
 ﻿using osu.Framework.Logging;
 using Symcol.Networking.NetworkingHandlers;
+using Symcol.Networking.NetworkingHandlers.Server;
 using Symcol.Networking.Packets;
 
 namespace Symcol.Server.Networking
 {
-    public class ServerNetworkingClientHandler : ServerNetworkingHandler
+    public class DefaultServerNetworkingHandler : ServerNetworkingHandler
     {
         public GameInfo RunningGame;
 
@@ -21,9 +22,9 @@ namespace Symcol.Server.Networking
         /// </summary>
         /// <param name="packet"></param>
         /// <returns></returns>
-        protected virtual bool HandlePacket(Packet packet)
+        protected override bool HandlePacket(Packet packet)
         {
-            if (GetClientInfo(packet) != null)
+            if (GetClient(packet) != null)
                 return true;
 
             if (packet is ConnectPacket c && c.Gamekey == RunningGame.Gamekey)

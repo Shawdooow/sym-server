@@ -1,19 +1,18 @@
 ﻿using System.Collections.Generic;
 using osu.Framework.Logging;
+using Symcol.Networking.NetworkingHandlers.Server;
 using Symcol.Networking.Packets;
 using Symcol.osu.Mods.Multi.Networking;
 using Symcol.osu.Mods.Multi.Networking.Packets.Lobby;
 using Symcol.osu.Mods.Multi.Networking.Packets.Match;
 using Symcol.osu.Mods.Multi.Networking.Packets.Player;
-using Symcol.Server.Networking;
 
 namespace Symcol.Server.Mod.osu.Networking
 {
-    public class OsuServerNetworkingClientHandler : ServerNetworkingClientHandler
+    public class OsuServerNetworkingClientHandler : ServerNetworkingHandler
     {
         protected override string Gamekey => "osu";
 
-        //TODO: if a match is empty for 1 min delete it automatically
         protected readonly List<ServerMatch> ServerMatches = new List<ServerMatch>();
 
         protected override void HandlePackets(Packet packet)
@@ -46,7 +45,7 @@ namespace Symcol.Server.Mod.osu.Networking
                     SendToClient(new MatchCreatedPacket{ MatchInfo = createMatch.MatchInfo }, createMatch);
                     break;
                 case JoinMatchPacket joinPacket:
-                    if (joinPacket.OsuClientInfo == null)
+                    if (joinPacket.OsuUserInfo == null)
                         break;
 
                     foreach (MatchListPacket.MatchInfo m in GetMatches())
@@ -59,25 +58,23 @@ namespace Symcol.Server.Mod.osu.Networking
                     if (match != null)
                     {
                         //Add them
-                        match.Players.Add(joinPacket.OsuClientInfo);
+                        match.Users.Add(joinPacket.OsuUserInfo);
 
                         foreach (ServerMatch s in ServerMatches)
                             if (s.MatchInfo == match)
                                 s.Players.Add(new Player
                                 {
-                                    OsuClientInfo = joinPacket.OsuClientInfo,
+                                    OsuUserInfo = joinPacket.OsuUserInfo,
                                     PlayerLastUpdateTime = Time.Current
                                 });
 
                         //Tell them they have joined
-                        SendToClient(new JoinedMatchPacket { Players = match.Players }, joinPacket);
+                        SendToClient(new JoinedMatchPacket { Users = match.Users }, joinPacket);
 
                         //Tell everyone already there someone joined
                         ShareWithMatchClients(match, new PlayerJoinedPacket
                         {
-                            //This is so the person joining doesnt get sent this
-                            Address = joinPacket.Address,
-                            Player = joinPacket.OsuClientInfo
+                            User = joinPacket.OsuUserInfo
                         });
                     }
                     else
@@ -85,7 +82,7 @@ namespace Symcol.Server.Mod.osu.Networking
 
                     break;
                 case GetMapPacket getMap:
-                    match = GetMatch(getMap.Player);
+                    match = GetMatch(getMap.User);
                     NetworkingClient.SendPacket(SignPacket(new SetMapPacket
                     {
                         OnlineBeatmapSetID = match.OnlineBeatmapSetID,
@@ -95,10 +92,10 @@ namespace Symcol.Server.Mod.osu.Networking
                         BeatmapMapper = match.BeatmapMapper,
                         BeatmapDifficulty = match.BeatmapDifficulty,
                         RulesetID = match.RulesetID,
-                    }), GetEndPoint(GetClientInfo(getMap)));
+                    }), GetClient(getMap).EndPoint);
                     break;
                 case SetMapPacket map:
-                    match = GetMatch(map.Player);
+                    match = GetMatch(map.User);
 
                     match.OnlineBeatmapSetID = map.OnlineBeatmapSetID;
                     match.OnlineBeatmapID = map.OnlineBeatmapID;
@@ -111,18 +108,18 @@ namespace Symcol.Server.Mod.osu.Networking
                     ShareWithMatchClients(match, map);
                     break;
                 case ChatPacket chat:
-                    ShareWithMatchClients(GetMatch(chat.Player), chat);
+                    ShareWithMatchClients(GetMatch(chat.User), chat);
                     break;
                 case LeavePacket leave:
-                    if (GetMatch(leave.Player) != null)
-                        foreach (OsuClientInfo player in GetMatch(leave.Player).Players)
-                            if (player.UserID == leave.Player.UserID)
+                    if (GetMatch(leave.User) != null)
+                        foreach (OsuUserInfo player in GetMatch(leave.User).Users)
+                            if (player.UserID == leave.User.UserID)
                             {
-                                GetMatch(leave.Player).Players.Remove(player);
+                                GetMatch(leave.User).Users.Remove(player);
 
                                 foreach (ServerMatch m in ServerMatches)
                                     foreach (Player p in m.LoadedPlayers)
-                                        if (p.OsuClientInfo.UserID == leave.Player.UserID)
+                                        if (p.OsuUserInfo.UserID == leave.User.UserID)
                                         {
                                             m.Players.Remove(p);
                                             m.LoadedPlayers.Remove(p);
@@ -133,23 +130,23 @@ namespace Symcol.Server.Mod.osu.Networking
                                 MatchListPacket list = new MatchListPacket();
                                 list = (MatchListPacket)SignPacket(list);
                                 list.MatchInfoList = GetMatches();
-                                NetworkingClient.SendPacket(list, GetEndPoint(GetClientInfo(leave)));
+                                NetworkingClient.SendPacket(list, GetClient(leave).EndPoint);
                                 break;
                             }
 
                     Logger.Log("Couldn't find a player to remove who told us they were leaving!", LoggingTarget.Network, LogLevel.Error);
                     break;
                 case StartMatchPacket start:
-                    match = GetMatch(start.Player);
+                    match = GetMatch(start.User);
                     ShareWithMatchClients(match, new MatchLoadingPacket
                     {
-                        Players = match.Players
+                        Users = match.Users
                     });
                     break;
                 case PlayerLoadedPacket loaded:
                     foreach (ServerMatch m in ServerMatches)
                         foreach (Player p in m.Players)
-                            if (p.OsuClientInfo.UserID == loaded.Player.UserID)
+                            if (p.OsuUserInfo.UserID == loaded.User.UserID)
                             {
                                 m.Players.Remove(p);
                                 m.LoadedPlayers.Add(p);
@@ -165,7 +162,7 @@ namespace Symcol.Server.Mod.osu.Networking
                 case MatchExitPacket exit:
                     foreach (ServerMatch m in ServerMatches)
                         foreach (Player p in m.LoadedPlayers)
-                            if (p.OsuClientInfo.UserID == exit.Player.UserID)
+                            if (p.OsuUserInfo.UserID == exit.User.UserID)
                             {
                                 restart:
                                 foreach (Player r in m.LoadedPlayers)
@@ -192,14 +189,14 @@ namespace Symcol.Server.Mod.osu.Networking
                     
                 }
 
-                if (match.MatchInfo.Players.Count == 0 && match.MatchLastUpdateTime + 60000 <= Time.Current)
+                if (match.MatchInfo.Users.Count == 0 && match.MatchLastUpdateTime + 60000 <= Time.Current)
                 {
                     ServerMatches.Remove(match);
                     Logger.Log("Empty match deleted!");
                     goto restart;
                 }
 
-                if (match.MatchInfo.Players.Count > 0)
+                if (match.MatchInfo.Users.Count > 0)
                 {
                     match.MatchLastUpdateTime = Time.Current;
                 }
@@ -208,23 +205,23 @@ namespace Symcol.Server.Mod.osu.Networking
 
         protected void ShareWithMatchClients(MatchListPacket.MatchInfo match, Packet packet)
         {
-            foreach (OsuClientInfo player in match.Players)
-                NetworkingClient.SendPacket(packet, GetEndPoint(player));
+            foreach (OsuUserInfo player in match.Users)
+                NetworkingClient.SendPacket(packet, GetClient(player).EndPoint);
         }
 
-        protected Player GetPlayer(OsuClientInfo client)
+        protected Player GetPlayer(OsuUserInfo client)
         {
             foreach (ServerMatch m in ServerMatches)
                 foreach (Player p in m.Players)
-                    if (p.OsuClientInfo.UserID == client.UserID)
+                    if (p.OsuUserInfo.UserID == client.UserID)
                         return p;
             return null;
         }
 
-        protected MatchListPacket.MatchInfo GetMatch(OsuClientInfo player)
+        protected MatchListPacket.MatchInfo GetMatch(OsuUserInfo player)
         {
             foreach (MatchListPacket.MatchInfo m in GetMatches())
-                foreach (OsuClientInfo p in m.Players)
+                foreach (OsuUserInfo p in m.Users)
                     if (p.UserID == player.UserID)
                         return m;
             return null;
@@ -240,12 +237,12 @@ namespace Symcol.Server.Mod.osu.Networking
             return matches;
         }
 
-        protected List<OsuClientInfo> GetOsuClientInfos(ServerMatch serverMatch)
+        protected List<OsuUserInfo> GetOsuClientInfos(ServerMatch serverMatch)
         {
-            List<OsuClientInfo> clients = new List<OsuClientInfo>();
+            List<OsuUserInfo> clients = new List<OsuUserInfo>();
 
             foreach (Player player in serverMatch.Players)
-                clients.Add(player.OsuClientInfo);
+                clients.Add(player.OsuUserInfo);
 
             return clients;
         }
@@ -263,7 +260,7 @@ namespace Symcol.Server.Mod.osu.Networking
 
         protected class Player
         {
-            public OsuClientInfo OsuClientInfo;
+            public OsuUserInfo OsuUserInfo;
 
             public double PlayerLastUpdateTime;
         }
