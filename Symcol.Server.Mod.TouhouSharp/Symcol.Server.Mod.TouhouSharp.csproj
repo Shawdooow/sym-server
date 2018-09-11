@@ -2,18 +2,14 @@
   <Import Project="..\Symcol.Server.props" />
   <PropertyGroup Label="Project">
     <TargetFramework>netstandard2.0</TargetFramework>
-    <AssemblyTitle>Symcol.Server</AssemblyTitle>
-    <Description>SymcolServer</Description>
+    <Description>mod for some shit</Description>
     <OutputType>Library</OutputType>
     <PlatformTarget>AnyCPU</PlatformTarget>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Remove="Gameplay\**" />
-    <EmbeddedResource Remove="Gameplay\**" />
-    <None Remove="Gameplay\**" />
-  </ItemGroup>
-  <ItemGroup>
-    <Service Include="{82a7f48d-3b50-4b1e-b82e-3ada8210c358}" />
+    <ProjectReference Include="..\Symcol.Server\Symcol.Server.csproj" />
+    <ProjectReference Include="..\TouhouSharp\THSharp.Gamemodes.TouhouSharp\THSharp.Gamemodes.TouhouSharp.csproj" />
+    <ProjectReference Include="..\TouhouSharp\THSharp.Game\THSharp.Game.csproj" />
   </ItemGroup>
 </Project>
