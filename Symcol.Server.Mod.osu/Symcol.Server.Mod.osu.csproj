@@ -8,7 +8,7 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
-    <ProjectReference Include="..\osu-symcol\Symcol\Symcol.osu.Mods.Multi\Symcol.osu.Mods.Multi.csproj" />
+    <ProjectReference Include="..\osu\Symcol\Symcol.osu.Mods.Multi\Symcol.osu.Mods.Multi.csproj" />
     <ProjectReference Include="..\Symcol.Server\Symcol.Server.csproj" />
   </ItemGroup>
 </Project>
