@@ -7,8 +7,8 @@ using osu.Framework.Graphics.UserInterface;
 using osu.Framework.Screens;
 using OpenTK;
 using OpenTK.Graphics;
-using Symcol.Core.Graphics.Containers;
-using Symcol.Core.Graphics.UserInterface;
+using Symcol.Base.Graphics.Containers;
+using Symcol.Base.Graphics.UserInterface;
 using Symcol.Server.Screens.Pieces;
 
 namespace Symcol.Server.Screens

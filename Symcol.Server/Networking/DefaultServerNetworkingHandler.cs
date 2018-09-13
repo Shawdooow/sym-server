@@ -1,5 +1,4 @@
 ﻿using osu.Framework.Logging;
-using Symcol.Networking.NetworkingHandlers;
 using Symcol.Networking.NetworkingHandlers.Server;
 using Symcol.Networking.Packets;
 

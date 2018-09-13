@@ -9,7 +9,6 @@
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\Symcol.Server\Symcol.Server.csproj" />
-    <ProjectReference Include="..\TouhouSharp\THSharp.Gamemodes.TouhouSharp\THSharp.Gamemodes.TouhouSharp.csproj" />
     <ProjectReference Include="..\TouhouSharp\THSharp.Game\THSharp.Game.csproj" />
   </ItemGroup>
 </Project>

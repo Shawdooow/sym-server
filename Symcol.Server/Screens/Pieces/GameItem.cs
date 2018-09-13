@@ -4,7 +4,8 @@ using osu.Framework.Graphics.Sprites;
 using osu.Framework.Input.States;
 using OpenTK;
 using OpenTK.Graphics;
-using Symcol.Core.Graphics.Containers;
+using Symcol.Base.Graphics.Containers;
+using Symcol.Networking.NetworkingHandlers.Server;
 using Symcol.Server.Mods;
 using Symcol.Server.Networking;
 
@@ -14,7 +15,7 @@ namespace Symcol.Server.Screens.Pieces
     {
         private readonly Box box;
 
-        public readonly ServerNetworkingClientHandler Server;
+        public readonly ServerNetworkingHandler Server;
 
         public GameItem(string name, string id, string address)
         {
@@ -34,18 +35,17 @@ namespace Symcol.Server.Screens.Pieces
             }
             else
             {
-                Server = new ServerNetworkingClientHandler
+                Server = new DefaultServerNetworkingHandler
                 {
-                    Address = address
+                    Address = address,
+                    RunningGame = new GameInfo
+                    {
+                        Name = name,
+                        Gamekey = id,
+                        //MaxPlayers = players
+                    }
                 };
             }
-            Server.ClientInfo.Gamekey = id;
-            Server.RunningGame = new GameInfo
-            {
-                Name = name,
-                Gamekey = id,
-                //MaxPlayers = players
-            };
 
             Children = new Drawable[]
             {
