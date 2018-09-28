@@ -205,8 +205,8 @@ namespace Symcol.Server.Mod.osu.Networking
 
         protected void ShareWithMatchClients(MatchListPacket.MatchInfo match, Packet packet)
         {
-            foreach (OsuUserInfo player in match.Users)
-                NetworkingClient.SendPacket(packet, GetClient(player).EndPoint);
+            //foreach (OsuUserInfo player in match.Users)
+                //NetworkingClient.SendPacket(packet, GetClient(player).EndPoint);
         }
 
         protected Player GetPlayer(OsuUserInfo client)
