@@ -1,11 +1,9 @@
-﻿using Symcol.Server.Mod.osu.Networking;
-using Symcol.Server.Mods;
-using Symcol.Server.Networking;
+﻿using Symcol.Server.Mods;
 
-namespace Symcol.Server.Mod.osu
+namespace Symcol.Server.Mod.TouhouSharp
 {
-    public sealed class OsuModset : Modset
+    public sealed class TouhouSharpModset : Modset
     {
-        public override ServerNetworkingClientHandler GetServerNetworkingClientHandler() => new OsuServerNetworkingClientHandler();
+        //public override ServerNetworkingClientHandler GetServerNetworkingClientHandler() => new TouhouSharpServerNetworkingClientHandler();
     }
 }
