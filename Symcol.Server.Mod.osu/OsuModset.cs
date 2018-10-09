@@ -1,5 +1,5 @@
-﻿using Symcol.Networking.NetworkingHandlers.Server;
-using Symcol.osu.Mods.Multi.Networking;
+﻿using osu.Mods.Multi.Networking;
+using Symcol.Networking.NetworkingHandlers.Server;
 using Symcol.Server.Mods;
 
 namespace Symcol.Server.Mod.osu
