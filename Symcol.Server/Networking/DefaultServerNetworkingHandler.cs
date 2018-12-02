@@ -8,12 +8,12 @@ namespace Symcol.Server.Networking
     {
         public GameInfo RunningGame;
 
-        protected override void HandlePackets(Packet packet)
+        protected override void HandlePackets(PacketInfo info)
         {
-            if (!HandlePacket(packet))
+            if (!HandlePacket(info.Packet))
                 return;
 
-            base.HandlePackets(packet);
+            base.HandlePackets(info);
         }
 
         /// <summary>
@@ -23,7 +23,7 @@ namespace Symcol.Server.Networking
         /// <returns></returns>
         protected override bool HandlePacket(Packet packet)
         {
-            if (GetClient(packet) != null)
+            if (GetLastClient() != null)
                 return true;
 
             if (packet is ConnectPacket c && c.Gamekey == RunningGame.Gamekey)

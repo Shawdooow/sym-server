@@ -1,6 +1,7 @@
 ﻿using osu.Framework.Graphics;
 using osu.Framework.Graphics.Shapes;
 using osu.Framework.Graphics.Sprites;
+using osu.Framework.Input.Events;
 using osu.Framework.Input.States;
 using OpenTK;
 using OpenTK.Graphics;
@@ -76,13 +77,13 @@ namespace Symcol.Server.Screens.Pieces
             };
         }
 
-        protected override bool OnHover(InputState state)
+        protected override bool OnHover(HoverEvent state)
         {
             box.FadeTo(0.2f);
             return base.OnHover(state);
         }
 
-        protected override void OnHoverLost(InputState state)
+        protected override void OnHoverLost(HoverLostEvent state)
         {
             base.OnHoverLost(state);
             box.FadeTo(0.5f);
