@@ -2,9 +2,8 @@
 using osu.Framework.Graphics.Shapes;
 using osu.Framework.Graphics.Sprites;
 using osu.Framework.Input.Events;
-using osu.Framework.Input.States;
-using OpenTK;
-using OpenTK.Graphics;
+using osuTK;
+using osuTK.Graphics;
 using Symcol.Base.Graphics.Containers;
 using Symcol.Networking.NetworkingHandlers.Server;
 using Symcol.Server.Mods;
