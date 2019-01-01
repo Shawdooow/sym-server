@@ -268,7 +268,7 @@ namespace Symcol.Server.Screens
                 } 
             });
 
-            games.Add(new GameItem("osu", "osu", "10.0.0.24:25590"));
+            games.Add(new GameItem("osu", "osu", "10.0.0.108:25590"));
         }
     }
 }
