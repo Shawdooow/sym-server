@@ -1,9 +1,11 @@
-﻿using osu.Framework.Extensions.Color4Extensions;
+﻿using osu.Framework.Allocation;
+using osu.Framework.Extensions.Color4Extensions;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Shapes;
 using osu.Framework.Graphics.Sprites;
 using osu.Framework.Graphics.UserInterface;
+using osu.Framework.Platform;
 using osu.Framework.Screens;
 using osuTK;
 using osuTK.Graphics;
@@ -141,9 +143,21 @@ namespace Symcol.Server.Screens
                                     Child = new Box
                                     {
                                         RelativeSizeAxes = Axes.Both,
-                                        Colour = Color4.Red.Opacity(0.2f)
+                                        Colour = Color4.Red.Opacity(0.5f)
                                     }
-                                }
+                                },
+                                new SymcolClickableContainer
+                                {
+                                    RelativeSizeAxes = Axes.Y,
+                                    Width = 40,
+                                    Action = () => storage.OpenInNativeExplorer(),
+
+                                    Child = new Box
+                                    {
+                                        RelativeSizeAxes = Axes.Both,
+                                        Colour = Color4.Green.Opacity(0.5f)
+                                    }
+                                },
                             }
                         },
                         new FillFlowContainer<SymcolClickableContainer>
@@ -270,6 +284,14 @@ namespace Symcol.Server.Screens
 
             games.Add(new GameItem("osu", "osu", "10.0.0.108:25590"));
             //games.Add(new GameItem("osu", "osu", "10.0.0.25:25590"));
+        }
+
+        private Storage storage;
+
+        [BackgroundDependencyLoader]
+        private void load(Storage storage)
+        {
+            this.storage = storage;
         }
     }
 }
