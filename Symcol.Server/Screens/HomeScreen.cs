@@ -29,7 +29,7 @@ namespace Symcol.Server.Screens
 
         public HomeScreen()
         {
-            Children = new Drawable[]
+            InternalChildren = new Drawable[]
             {
                 new Box
                 {
@@ -269,6 +269,7 @@ namespace Symcol.Server.Screens
             });
 
             games.Add(new GameItem("osu", "osu", "10.0.0.108:25590"));
+            //games.Add(new GameItem("osu", "osu", "10.0.0.25:25590"));
         }
     }
 }

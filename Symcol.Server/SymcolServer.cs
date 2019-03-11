@@ -11,8 +11,6 @@ namespace Symcol.Server
             HomeScreen homeScreen = new HomeScreen();
 
             Add(homeScreen);
-
-            homeScreen.Exited += _ => Scheduler.AddDelayed(Exit, 500);
         }
     }
 }
