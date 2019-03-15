@@ -258,6 +258,5 @@ __pycache__/
 *.pyc
 Staging/
 
-/Symcol.Server.mod.Alki
-osu/
-Symcol.Core/
+osu-sym/
+osu-framework-sym/
