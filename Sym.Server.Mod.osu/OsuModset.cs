@@ -1,8 +1,8 @@
 ﻿using osu.Mods.Online.Base;
-using Symcol.Networking.NetworkingHandlers.Server;
-using Symcol.Server.Mods;
+using Sym.Networking.NetworkingHandlers.Server;
+using Sym.Server.Mods;
 
-namespace Symcol.Server.Mod.osu
+namespace Sym.Server.Mod.osu
 {
     public sealed class OsuModset : Modset
     {

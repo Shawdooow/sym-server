@@ -1,7 +1,7 @@
 ﻿using osu.Framework.Configuration;
 using osu.Framework.Platform;
 
-namespace Symcol.Server.Config
+namespace Sym.Server.Config
 {
     public class SymcolServerConfigManager : IniConfigManager<SymcolServerSetting>
     {

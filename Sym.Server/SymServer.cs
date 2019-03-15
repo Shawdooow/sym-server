@@ -1,8 +1,8 @@
-﻿using Symcol.Server.Screens;
+﻿using Sym.Server.Screens;
 
-namespace Symcol.Server
+namespace Sym.Server
 {
-    public class SymcolServer : SymcolServerBase
+    public class SymServer : SymServerBase
     {
         protected override void LoadComplete()
         {

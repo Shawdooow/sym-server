@@ -14,6 +14,6 @@
     <None Remove="Gameplay\**" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Symcol.Core\Symcol.Networking\Symcol.Networking.csproj" />
+    <ProjectReference Include="..\osu-framework-sym\Sym.Networking\Sym.Networking.csproj" />
   </ItemGroup>
 </Project>

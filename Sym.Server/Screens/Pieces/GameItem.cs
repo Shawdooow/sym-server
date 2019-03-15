@@ -4,12 +4,12 @@ using osu.Framework.Graphics.Sprites;
 using osu.Framework.Input.Events;
 using osuTK;
 using osuTK.Graphics;
-using Symcol.Base.Graphics.Containers;
-using Symcol.Networking.NetworkingHandlers.Server;
-using Symcol.Server.Mods;
-using Symcol.Server.Networking;
+using Sym.Base.Graphics.Containers;
+using Sym.Networking.NetworkingHandlers.Server;
+using Sym.Server.Mods;
+using Sym.Server.Networking;
 
-namespace Symcol.Server.Screens.Pieces
+namespace Sym.Server.Screens.Pieces
 {
     public class GameItem : SymcolClickableContainer
     {

@@ -1,4 +1,4 @@
-﻿namespace Symcol.Server.Networking
+﻿namespace Sym.Server.Networking
 {
     public class GameInfo
     {

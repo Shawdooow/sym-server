@@ -11,7 +11,7 @@
     <StartupObject />
   </PropertyGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Symcol.Server.Mod.osu\Symcol.Server.Mod.osu.csproj" />
-    <ProjectReference Include="..\Symcol.Server\Symcol.Server.csproj" />
+    <ProjectReference Include="..\Sym.Server.Mod.osu\Sym.Server.Mod.osu.csproj" />
+    <ProjectReference Include="..\Sym.Server\Sym.Server.csproj" />
   </ItemGroup>
 </Project>

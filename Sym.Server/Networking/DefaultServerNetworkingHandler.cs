@@ -1,8 +1,8 @@
 ﻿using osu.Framework.Logging;
-using Symcol.Networking.NetworkingHandlers.Server;
-using Symcol.Networking.Packets;
+using Sym.Networking.NetworkingHandlers.Server;
+using Sym.Networking.Packets;
 
-namespace Symcol.Server.Networking
+namespace Sym.Server.Networking
 {
     public class DefaultServerNetworkingHandler : ServerNetworkingHandler
     {

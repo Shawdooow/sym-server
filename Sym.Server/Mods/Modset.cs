@@ -1,7 +1,7 @@
-﻿using Symcol.Networking.NetworkingHandlers.Server;
-using Symcol.Server.Networking;
+﻿using Sym.Networking.NetworkingHandlers.Server;
+using Sym.Server.Networking;
 
-namespace Symcol.Server.Mods
+namespace Sym.Server.Mods
 {
     public abstract class Modset
     {

@@ -5,7 +5,7 @@ using System.Linq;
 using System.Reflection;
 using osu.Framework.Logging;
 
-namespace Symcol.Server.Mods
+namespace Sym.Server.Mods
 {
     public static class ModStore
     {
@@ -13,15 +13,15 @@ namespace Symcol.Server.Mods
         {
             Dictionary<Assembly, Type> loadedAssemblies = new Dictionary<Assembly, Type>();
 
-            foreach (string file in Directory.GetFiles(Environment.CurrentDirectory, $"Symcol.Server.Mod.{name}.dll"))
+            foreach (string file in Directory.GetFiles(Environment.CurrentDirectory, $"Sym.Server.Mod.{name}.dll"))
             {
-                var filename = Path.GetFileNameWithoutExtension(file);
+                string filename = Path.GetFileNameWithoutExtension(file);
 
                 if (loadedAssemblies.Values.Any(t => t.Namespace == filename)) return null;
 
                 try
                 {
-                    var assembly = Assembly.LoadFrom(file);
+                    Assembly assembly = Assembly.LoadFrom(file);
                     loadedAssemblies[assembly] = assembly.GetTypes().First(t => t.IsPublic && t.IsSubclassOf(typeof(Modset)));
                 }
                 catch (Exception)
@@ -30,7 +30,7 @@ namespace Symcol.Server.Mods
                 }
             }
 
-            var instances = loadedAssemblies.Values.Select(g => (Modset)Activator.CreateInstance(g)).ToList();
+            List<Modset> instances = loadedAssemblies.Values.Select(g => (Modset)Activator.CreateInstance(g)).ToList();
 
             try
             {

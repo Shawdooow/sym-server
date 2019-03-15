@@ -9,11 +9,11 @@ using osu.Framework.Platform;
 using osu.Framework.Screens;
 using osuTK;
 using osuTK.Graphics;
-using Symcol.Base.Graphics.Containers;
-using Symcol.Base.Graphics.UserInterface;
-using Symcol.Server.Screens.Pieces;
+using Sym.Base.Graphics.Containers;
+using Sym.Base.Graphics.UserInterface;
+using Sym.Server.Screens.Pieces;
 
-namespace Symcol.Server.Screens
+namespace Sym.Server.Screens
 {
     public class HomeScreen : Screen
     {

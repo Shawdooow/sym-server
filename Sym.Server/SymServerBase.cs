@@ -1,12 +1,12 @@
 ﻿using osu.Framework.Allocation;
 using osu.Framework.Platform;
-using Symcol.Server.Config;
+using Sym.Server.Config;
 
-namespace Symcol.Server
+namespace Sym.Server
 {
-    public class SymcolServerBase : osu.Framework.Game
+    public class SymServerBase : osu.Framework.Game
     {
-        protected SymcolServerConfigManager SymcolServerConfigManager;
+        protected SymcolServerConfigManager SymServerConfigManager;
 
         private DependencyContainer dependencies;
 
@@ -17,23 +17,23 @@ namespace Symcol.Server
         private void load()
         {
             dependencies.Cache(this);
-            dependencies.Cache(SymcolServerConfigManager);
+            dependencies.Cache(SymServerConfigManager);
 
             //Window.CursorState = CursorState.Hidden;
-            Window.Title = @"SymcolServer";
+            Window.Title = @"Sym Server";
         }
 
         public override void SetHost(GameHost host)
         {
-            if (SymcolServerConfigManager == null)
-                SymcolServerConfigManager = new SymcolServerConfigManager(host.Storage);
+            if (SymServerConfigManager == null)
+                SymServerConfigManager = new SymcolServerConfigManager(host.Storage);
 
             base.SetHost(host);
         }
 
         protected override void Dispose(bool isDisposing)
         {
-            SymcolServerConfigManager?.Save();
+            SymServerConfigManager?.Save();
             base.Dispose(isDisposing);
         }
     }
